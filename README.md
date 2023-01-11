@@ -11,7 +11,7 @@ where the two parts of X have $K_{1}$ and $K_{2}$ columns, respectively. If we r
 
 $$b_{1} = (X'_{1}X_{1})^{-1}X'_{1}y = β_{1} + (X'_{1}X_{1})^{-1}X'_{1}X_{2}β_{2} + (X'_{1}X_{1})^{-1}X'_{1}ε.$$
 
-Taking the expectation, we see that unless $X_1'X_2 = 0$ or $β_2 = 0$, b_1 is biased. The wellknown result is the omitted variable formula:
+Taking the expectation, we see that unless $X_1'X_2 = 0$ or $β_2 = 0$, $b_1$ is biased. The wellknown result is the omitted variable formula:
 
 $$E[b_1|X] = β_1 + P_{1.2}β_{2},$$
 
