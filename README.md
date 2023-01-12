@@ -158,6 +158,9 @@ gr 			 export 		biased_estimator.png, replace
 ```
 ---
 
+The figure below from the simulation study shows that the OLS estimator is biased in the presence of omitted variable bias
+![combine](https://user-images.githubusercontent.com/101017847/212010487-1be5c8cc-e685-4eea-8c00-5c32a907565b.png)
+
 ## A Monte Carlo Study-Inconsistent estimator
 This do file below produces a Monte Carlo study of omitted variable	bias	in least squares
 
@@ -321,3 +324,5 @@ gr 			export 		inconsistent_estimator.png, replace
 
 ```
 ---
+
+The figure below from the simulation study shows that the OLS estimator is inconsistent in the presence of omitted variable bias
