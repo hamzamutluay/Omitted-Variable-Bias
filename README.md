@@ -327,3 +327,116 @@ gr 			export 		inconsistent_estimator.png, replace
 
 The figure below from the simulation study shows that the OLS estimator is inconsistent in the presence of omitted variable bias.
 ![combine_large_sample](https://user-images.githubusercontent.com/101017847/212012080-52a53263-51c9-40ee-b100-8c192cff0356.png)
+
+
+## A Monte Carlo Study with R codes-Inconsistent and biased estimator
+```
+{r Omitted Variabel  - Biased estimator}
+
+library(MASS)
+
+# Define the population parameters
+beta0 = 10
+beta1 = 1
+beta2 = 1.5
+
+# Sample size
+n = 100
+
+#Number of replications
+replication = 2000
+
+#Cov(x1,x2) = 0.3
+sigma12 = 0.3 
+
+alfahat0 = rep(0,replication)
+alfahat1 = rep(0,replication)
+
+for (i in (1:replication)) {
+  
+x = mvrnorm(n, mu = c(0.5,0.5), Sigma=matrix(c(1,sigma12,sigma12,1),2,2), empirical = TRUE)
+
+x1 = x[,1]
+x2 = x[,2]
+
+# DGP
+y = beta0 + beta1 * x1 + beta2 * x2 + epsilon
+  
+# Estimated Model 
+model = lm(y ~ x1)
+  
+alfahat0[i] = summary.lm(model)$coefficients[1,1]
+alfahat1[i] = summary.lm(model)$coefficients[2,1]
+
+}
+
+bias_alfa0 = (mean(alfahat0) - beta0)*100
+bias_alfa1 = (mean(alfahat1) - beta1)*100
+
+bias_alfa0
+bias_alfa1
+
+```
+
+```
+{r Omitted Variabel  - Inconsistent estimator}
+
+library(MASS)
+
+# Define the population parameters
+beta0   = 10
+beta1   = 1
+beta2   = 1.5
+
+#Cov(x1,x2) = 0.3
+sigma12     = 0.3
+
+replication = 2000
+
+epsilon =  0.05 #Any arbitrarily small positive number
+
+
+n_all = seq(100, 10000, by = 900) #Sample Sizes
+
+prob1 = rep(0, length(n_all))
+prob2 = rep(0, length(n_all))
+
+for (i in (1:length(n_all))) {
+  n = n_all[i]
+  x = mvrnorm(n, mu = c(0.5,0.5), Sigma = matrix(c(1,sigma12,sigma12,1),2,2), empirical = TRUE)
+  
+  x1 = x[,1]
+  x2 = x[,2]
+
+  alfahat0 = rep(0,replication)
+  alfahat1 = rep(0,replication)
+
+for (j in (1:replication)) {
+    
+error_term = rnorm(n, mean = 0, sd = 1)  
+    
+# Data Generating Process
+y = beta0 + beta1 * x1 + beta2 * x2 + error_term
+    
+# Estimated Model 
+model = lm(y ~ x1)
+
+alfahat0[j] = summary.lm(model)$coefficients[1,1]
+alfahat1[j] = summary.lm(model)$coefficients[2,1]
+    
+}
+  
+  prob1[i] = mean(abs(alfahat0 - beta0) < epsilon)
+  prob2[i] = mean(abs(alfahat1 - beta1) < epsilon)
+  
+}
+
+prob1
+prob2
+
+plot(y = prob2, x = seq(100,10000, by=900),
+     main="Inconsistent estimator", xlab="Sample size" ,
+     ylab="Probability ")
+
+  
+```
