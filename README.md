@@ -19,7 +19,7 @@ where $$P_{1.2} = (X_1'X_1)^{-1}X_1'X_2$$
 
 Each column of the $K_1$ x $K_2$ matrix $P_{1.2}$ is the column of slopes in the least squares regression of the corresponding column of $X_2$ on the columns of $X_1$.
 
-## Biased estimator
+## A Monte Carlo Study-Biased estimator
 This do file below produces a Monte Carlo study of omitted variable	bias	in least squares
 
 ---
@@ -158,7 +158,7 @@ gr 			 export 		biased_estimator.png, replace
 ```
 ---
 
-## Inconsistent estimator
+## A Monte Carlo Study-Inconsistent estimator
 This do file below produces a Monte Carlo study of omitted variable	bias	in least squares
 
 ---
