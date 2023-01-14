@@ -132,7 +132,7 @@ svmat       betahat, names(col)
 #delimit 		;
 
 hist 		betahat_1, normal xline(1, lwidth(thick)) scheme(white_piyg)  color(%30) 
-					   ti("Sampling Distributions of Beta Estimates", size(*0.8) height(3)) ///
+					   ti("Sampling Distributions of Beta Estimates", size(*0.8) height(3)) 
 					   subtitle("Biased Estimator", size(*0.7)) 
 					   xlab(0.5(0.5)1.5) xti(Estimates, height(3)) 
 					   xlabel(0.5 1 "True Beta(`=ustrunescape("\u03b2")'=1)"  1.5 2) 
