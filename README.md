@@ -30,7 +30,7 @@ A Monte Carlo Study of Omitted Variable Bias in Least Squares
 
 Finite-Sample Properties of OLS	
 							             
-12-Jan-2023    		      
+14-Jan-2023    		      
 								             
 Hamza Mutluay			      
   	 			 			   
@@ -164,7 +164,7 @@ A Monte Carlo Study of Omitted Variable Bias in Least Squares
 
 Large-Sample Properties of OLS	
 							             
-12-Jan-2023    		      
+14-Jan-2023    		      
 								             
 Hamza Mutluay			      
   	 			 			   
