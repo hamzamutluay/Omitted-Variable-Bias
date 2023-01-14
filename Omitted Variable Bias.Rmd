@@ -82,8 +82,6 @@ bias_alfa1 = (mean(alfahat1) - beta1)*100
 
 bias_alfa0
 bias_alfa1
-hist(alfahat1)
-
 
 plotNormalHistogram(alfahat1, prob = TRUE, col="light coral",linecol="blue",border="red",
                     xlim=c(0.8,2), 
