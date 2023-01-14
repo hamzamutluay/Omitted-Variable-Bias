@@ -328,7 +328,7 @@ The figure below from the simulation study shows that the OLS estimator is incon
 ```
 {r Omitted Variabel  - Biased estimator}
 
- Define the population parameters
+# Define the population parameters
 beta0 = 10
 beta1 = 1
 beta2 = 1.5
@@ -371,19 +371,12 @@ bias_alfa0
 bias_alfa1
 hist(alfahat1)
 
-m   <- mean(alfahat1)
-st  <- sqrt(var(alfahat1))
-hist(alfahat1, prob = TRUE, ylim = c(0,4),  col="light coral")
-curve(dnorm(x , mean = m, sd = st), col="light coral", lwd=3,
-      add = TRUE) 
-abline(v = 1, col="red", lwd=3, lty=1)
 
 plotNormalHistogram(alfahat1, prob = TRUE, col="light coral",linecol="blue",border="red",
                     xlim=c(0.8,2), 
                     main = "Sampling Distributions of Beta Estimates-Biased estimator", 
                     xlab="Estimates")
 abline(v = 1, col="blue", lwd=3, lty=2)
-
 
 ```
 
@@ -447,7 +440,6 @@ x = seq(100,10000, 900)
 plot(y = prob2, x, ylim=c(0,1) ,xlim=c(100,10000), pch=19,
      main="Inconsistent estimator", xlab="Sample size" ,
      ylab="Probability ")
-
 
   
 ```
