@@ -84,12 +84,6 @@ bias_alfa0
 bias_alfa1
 hist(alfahat1)
 
-m   <- mean(alfahat1)
-st  <- sqrt(var(alfahat1))
-hist(alfahat1, prob = TRUE, ylim = c(0,4),  col="light coral")
-curve(dnorm(x , mean = m, sd = st), col="light coral", lwd=3,
-      add = TRUE) 
-abline(v = 1, col="red", lwd=3, lty=1)
 
 plotNormalHistogram(alfahat1, prob = TRUE, col="light coral",linecol="blue",border="red",
                     xlim=c(0.8,2), 
