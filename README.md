@@ -37,6 +37,113 @@ Hamza Mutluay
 comments/errors reports: hamzamutluay@gmail.com
 ****************************************************************************/
 
+cls
+clear 		*
+se 			mo off, perm
+pause 		off, perm
+
+
+*- Directory --
+
+cd 			"C:\Users\hamza.mutluay\Dropbox\Github\Github Part 4"
+
+se 			se 		100113 // Set the seed to reproduce the same output of simulation
+
+*- Sample size  ------
+
+se obs 		100
+loc 		n = _N
+*----------------------
+
+
+*- Define the population parameters -------
+
+loc 		beta_0 = 1
+loc 		beta_1 = 1
+loc 		beta_2 = 1.5
+*-------------------------------------------
+
+
+loc 		rep	= 5000   // Number of replications
+
+
+*- Parameters of the variance-covariance matrix of jointly distributed random variables  ----
+
+loc 		sigma12 = 0.3
+mat 		vector_mean = (0.5,0.5)
+
+mat 		Covmatrix = (1,`sigma12'\ `sigma12',1)
+drawnorm 	x1 x2 , n(`n') cov(Covmatrix) m(vector_mean)
+
+*---------------------------------------------------------
+
+
+*- Store the estimated beta in a matrix ---
+
+mat 		betahat = J(`rep',2,.)
+
+*-------------------------------------------
+
+
+forv 		t = 1/`rep' {
+
+g 			u = rnormal(0,1)
+	
+*- Data Generating Process
+
+g 			y = `beta_0' + `beta_1'*x1 + `beta_2'*x2 + u
+
+*- Estimated model
+
+reg			y x1 
+
+mat 		betahat[`t',1] = r(table)[1,2] 		// betahat_0
+mat 		betahat[`t',2] = r(table)[1,1] 		// betahat_1
+
+drop 		y 	u  
+
+
+}
+
+sca 		sum_betahat_0 = 0
+sca 		sum_betahat_1 = 0
+
+
+forv 		i = 1 / `rep' {
+
+sca 		sum_betahat_0 = sum_betahat_0 + betahat[`i',1]
+sca 		sum_betahat_1 = sum_betahat_1 + betahat[`i',2]
+
+}
+
+sca 		bias_betahat_0  = ((sum_betahat_0/`rep') - `beta_0')*100
+sca 		bias_betahat_1  = ((sum_betahat_1/`rep') - `beta_1')*100
+
+di 			" Bias of betahat_0 = " bias_betahat_0
+di 			" Bias of betahat_1 = " bias_betahat_1
+
+mat			colname betahat = betahat_0 betahat_1  
+svmat       betahat, names(col)
+
+
+
+*- Graph ---
+
+#delimit 		;
+
+hist 		betahat_1, normal xline(1, lwidth(thick)) scheme(white_piyg)  color(%30) 
+					   ti("Sampling Distributions of Beta Estimates", size(*0.8) height(3)) ///
+					   subtitle("Biased Estimator", size(*0.7)) 
+					   xlab(0.5(0.5)1.5) xti(Estimates, height(3)) 
+					   xlabel(0.5 1 "True Beta(`=ustrunescape("\u03b2")'=1)"  1.5 2) 
+					   text(1.2 0.7 "E(`=ustrunescape("\u03b2")') `=ustrunescape("\u2260")' `=ustrunescape("\u03b2")'" ) 
+					   text(1.24 0.682 "`=ustrunescape("\u0302")'")
+;
+#delimit cr  				   
+   
+					   
+gr 			export 		biased_estimator.png, replace
+
 
 
 
@@ -65,7 +172,6 @@ comments/errors reports: hamzamutluay@gmail.com
 ****************************************************************************/
 
 
-
 ```
 ---
 
@@ -77,12 +183,125 @@ The figure below from the simulation study shows that the OLS estimator is incon
 ```
 {r Omitted Variabel  - Biased estimator}
 
+ Define the population parameters
+beta0 = 10
+beta1 = 1
+beta2 = 1.5
+
+# Sample size
+n = 100
+
+#Number of replications
+replication = 5000
+
+
+sigma12 = 0.3 
+
+alfahat0 = rep(0,replication)
+alfahat1 = rep(0,replication)
+x = mvrnorm(n, mu = c(0.5,0.5), Sigma=matrix(c(1,sigma12,sigma12,1),2,2), empirical = TRUE)
+
+x1 = x[,1]
+x2 = x[,2]
+
+for (i in (1:replication)) {
+
+epsilon = rnorm(n, mean = 0, sd = 1) 
+
+# DGP
+y = beta0 + beta1 * x1 + beta2 * x2 + epsilon
+  
+# Estimated Model 
+model = lm(y ~ x1)
+  
+alfahat0[i] = summary.lm(model)$coefficients[1,1]
+alfahat1[i] = summary.lm(model)$coefficients[2,1]
+
+}
+
+bias_alfa0 = (mean(alfahat0) - beta0)*100
+bias_alfa1 = (mean(alfahat1) - beta1)*100
+
+bias_alfa0
+bias_alfa1
+hist(alfahat1)
+
+m   <- mean(alfahat1)
+st  <- sqrt(var(alfahat1))
+hist(alfahat1, prob = TRUE, ylim = c(0,4),  col="light coral")
+curve(dnorm(x , mean = m, sd = st), col="light coral", lwd=3,
+      add = TRUE) 
+abline(v = 1, col="red", lwd=3, lty=1)
+
+plotNormalHistogram(alfahat1, prob = TRUE, col="light coral",linecol="blue",border="red",
+                    xlim=c(0.8,2), 
+                    main = "Sampling Distributions of Beta Estimates-Biased estimator", 
+                    xlab="Estimates")
+abline(v = 1, col="blue", lwd=3, lty=2)
+
 
 ```
 
 ```
 {r Omitted Variabel  - Inconsistent estimator}
 
+# Define the population parameters
+beta0   = 10
+beta1   = 1
+beta2   = 1.5
+
+
+sigma12     = 0.3
+
+replication = 2000
+
+epsilon =  0.05 #Any arbitrarily small positive number
+
+
+n_all = seq(100, 10000, by = 900) #Sample Sizes
+
+prob1 = rep(0, length(n_all))
+prob2 = rep(0, length(n_all))
+
+for (i in (1:length(n_all))) {
+  
+n = n_all[i]
+
+alfahat0 = rep(0,replication)
+alfahat1 = rep(0,replication)
+
+x = mvrnorm(n, mu = c(0.5,0.5), Sigma = matrix(c(1,sigma12,sigma12,1),2,2), empirical = TRUE)
+
+x1 = x[,1]
+x2 = x[,2]
+
+for (j in (1:replication)) {
+
+error_term = rnorm(n, mean = 0, sd = 1) 
+  
+# Data Generating Process
+y = beta0 + beta1 * x1 + beta2 * x2 + error_term
+    
+# Estimated Model 
+model = lm(y ~ x1)
+
+alfahat0[j] = summary.lm(model)$coefficients[1,1]
+alfahat1[j] = summary.lm(model)$coefficients[2,1]
+    
+}
+  
+prob1[i] = mean(abs(alfahat0 - beta0) < epsilon)
+prob2[i] = mean(abs(alfahat1 - beta1) < epsilon)
+  
+}
+
+prob1
+prob2
+
+x = seq(100,10000, 900)
+plot(y = prob2, x, ylim=c(0,1) ,xlim=c(100,10000), pch=19,
+     main="Inconsistent estimator", xlab="Sample size" ,
+     ylab="Probability ")
 
 
   
