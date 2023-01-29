@@ -327,7 +327,7 @@ The figure below from the simulation study shows that the OLS estimator is incon
 ## A Monte Carlo Study with R codes-Inconsistent and biased estimator
 ---
 
-```R
+```r
 {r Omitted Variabel  - Biased estimator}
 
 # Define the population parameters
