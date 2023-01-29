@@ -23,7 +23,7 @@ Each column of the $K_1$ x $K_2$ matrix $P_{1.2}$ is the column of slopes in the
 This do file below produces a Monte Carlo study of omitted variable	bias	in least squares
 
 ---
-```stata
+```
 
 /*************************************************************************
 A Monte Carlo Study of Omitted Variable Bias in Least Squares	   
@@ -157,7 +157,7 @@ The figure below from the simulation study shows that the OLS estimator is biase
 This do file below produces a Monte Carlo study of omitted variable bias in least squares
 
 ---
-```stata
+```
 
 /*************************************************************************
 A Monte Carlo Study of Omitted Variable Bias in Least Squares	   
