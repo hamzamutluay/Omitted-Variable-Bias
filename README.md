@@ -325,7 +325,9 @@ The figure below from the simulation study shows that the OLS estimator is incon
 
 
 ## A Monte Carlo Study with R codes-Inconsistent and biased estimator
-```
+---
+
+```R
 {r Omitted Variabel  - Biased estimator}
 
 # Define the population parameters
@@ -378,9 +380,8 @@ plotNormalHistogram(alfahat1, prob = TRUE, col="light coral",linecol="blue",bord
                     xlab="Estimates")
 abline(v = 1, col="blue", lwd=3, lty=2)
 
-```
 
-```
+
 {r Omitted Variabel  - Inconsistent estimator}
 
 # Define the population parameters
@@ -443,3 +444,4 @@ plot(y = prob2, x, ylim=c(0,1) ,xlim=c(100,10000), pch=19,
 
   
 ```
+---
